@@ -1,4 +1,8 @@
-import { ALL_FAMILIES } from '../actions'
+import {
+  ALL_FAMILIES,
+  NEW_FAMILY,
+  CHANGE_FAMILY
+} from '../actions'
 
 // const state = state || []
 function reducer (state = [], action = {}) {
@@ -14,6 +18,20 @@ function reducer (state = [], action = {}) {
       //   ]
       // }
       return action.payload
+    case NEW_FAMILY:
+      return [action.payload, ...state]
+    case CHANGE_FAMILY:
+      const newState = state.map(family => {
+        const condition = family.id === action.payload.id
+
+        if (condition) {
+          return action.payload
+        }
+
+        return family
+      })
+
+      return newState
     default:
       return state   
   }

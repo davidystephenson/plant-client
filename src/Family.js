@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { updateFamily } from './actions'
 
-import Family from './Family'
-import {
-  getAllFamilies,
-  createNewFamily
-} from './actions'
-
-// class App extends React.Component {
-class App extends Component {
+class Family extends Component {
   state = {
     name: '',
     location: ''
   }
 
-  async componentDidMount () {
-    this.props.getAllFamilies()
-  }
-
   onSubmit = event => {
     event.preventDefault()
-    // Send a POST request to the server
-    // Include the name and location in the body
+
+    // Send a PUT request to the server
+    // Include the new name and new location
+    // in the body
+    const update = {
+      name: this.state.name,
+      location: this.state.location
+    }
+    this.props.updateFamily(
+      this.props.family.id,
+      update
+    )
 
     console.log('submit test')
-
-    this.props.createNewFamily(
-      this.state.name,
-      this.state.location
-    )
   }
 
   onChange = event => {
@@ -41,60 +36,46 @@ class App extends Component {
     this.setState(update)
   }
 
-  onChangeEnclosed = (key, value) => {
-    this.setState({ [key]: value })
-  }
-
   reset = () => {
     this.setState({ name: '', location: '' })
   }
 
   render () {
-    const families = this
-      .props
-      .familiesList
-      .map(family => <Family
-        key={family.id}
-        family={family}
-      />)
+    return <div>
+      <h3>{this.props.family.name}</h3>
 
-    return <main>
+      <p>{this.props.family.location}</p>
+
       <form onSubmit={this.onSubmit}>
-        <label>
-          <h3>Name</h3>
+        <div>
+          Name
+          {' '}
           <input
             type='text'
             name='name'
             onChange={this.onChange}
             value={this.state.name}
           />
-        </label>
-
-        <label>
-          <h3>Location</h3>
-          <input
-            type='text'
-            value={this.state.location}
-            onChange={
-              event => {
-                this.onChangeEnclosed(
-                  'location',
-                  event.target.value
-                )
-              }
-            }
-          />
-        </label>
+        </div>
 
         <div>
-          <button>Submit</button>
+          Location
+          {' '}
+          <input
+            type='text'
+            name='location'
+            value={this.state.location}
+            onChange={this.onChange}
+          />
+        </div>
+
+        <div>
+          <button>Edit</button>
         </div>
       </form>
 
       <button onClick={this.reset}>Reset</button>
-
-      {families}
-    </main>
+    </div>
   }
 }
 
@@ -116,11 +97,10 @@ function mapStateToProps (reduxState) {
 // Storing
 // Organizing
 const mapDispatchToProps = {
-  getAllFamilies,
-  createNewFamily
+  updateFamily
 }
 
 // const connector = connect()
 // const connected = connector(App)
 // export default connected
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Family)
