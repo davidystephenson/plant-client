@@ -10,8 +10,21 @@ function allFamilies (families) {
 }
 
 export function getAllFamilies () {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     try {
+      const state = getState()
+
+      const { families } = state
+
+      const condition = families.length
+
+      if (condition) {
+        console.log('end early')
+        return null
+      }
+
+      console.log('keep going')
+
       const response = await superagent
         .get('http://localhost:4000/family')
 

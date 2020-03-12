@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { updateFamily } from './actions'
+import {
+  updateFamily,
+  getAllFamilies
+} from './actions'
+import EditFamilyForm from './EditFamilyForm'
+import { Route } from 'react-router-dom'
 
 class Family extends Component {
   state = {
     name: '',
     location: ''
+  }
+
+  componentDidMount () {
+    this.props.getAllFamilies()
   }
 
   onSubmit = event => {
@@ -18,8 +27,10 @@ class Family extends Component {
       name: this.state.name,
       location: this.state.location
     }
+
+    const family = this.pickFamily()
     this.props.updateFamily(
-      this.props.family.id,
+      family.id,
       update
     )
 
@@ -40,41 +51,44 @@ class Family extends Component {
     this.setState({ name: '', location: '' })
   }
 
+  pickFamily (props) {
+    const { familiesList, match } = this.props
+
+    if (match) {
+      if (!familiesList.length) {
+        return 'Loading...' 
+      }
+
+      const { id } = match.params
+      const idNumber = parseInt(id)
+
+      console.log('familiesList test:', familiesList)
+      console.log('id test:', id)
+
+      const idFamily = familiesList
+        .find(family => family.id === idNumber)
+
+      console.log('idFamily test:', idFamily)
+
+      return idFamily
+    }
+
+    return this.props.family
+  }
+
   render () {
+    console.log('this.props.test:', this.props)
+    
+    const family = this.pickFamily()
+    
+    console.log('family test:', family)
+
     return <div>
-      <h3>{this.props.family.name}</h3>
+      <marquee>{family.name}</marquee>
 
-      <p>{this.props.family.location}</p>
+      <p>{family.location}!</p>
 
-      <form onSubmit={this.onSubmit}>
-        <div>
-          Name
-          {' '}
-          <input
-            type='text'
-            name='name'
-            onChange={this.onChange}
-            value={this.state.name}
-          />
-        </div>
-
-        <div>
-          Location
-          {' '}
-          <input
-            type='text'
-            name='location'
-            value={this.state.location}
-            onChange={this.onChange}
-          />
-        </div>
-
-        <div>
-          <button>Edit</button>
-        </div>
-      </form>
-
-      <button onClick={this.reset}>Reset</button>
+      <Route path='/family/:id' component={EditFamilyForm} />
     </div>
   }
 }
@@ -97,7 +111,8 @@ function mapStateToProps (reduxState) {
 // Storing
 // Organizing
 const mapDispatchToProps = {
-  updateFamily
+  updateFamily,
+  getAllFamilies
 }
 
 // const connector = connect()
