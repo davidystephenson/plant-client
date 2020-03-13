@@ -58,8 +58,9 @@ class Families extends Component {
 
     return <div>
       <form onSubmit={this.onSubmit}>
+        <h4>New Family</h4>
         <label>
-          <h3>Name</h3>
+          <h5>Name</h5>
           <input
             type='text'
             name='name'
@@ -69,7 +70,7 @@ class Families extends Component {
         </label>
 
         <label>
-          <h3>Location</h3>
+          <h5>Location</h5>
           <input
             type='text'
             value={this.state.location}

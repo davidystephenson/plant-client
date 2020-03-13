@@ -19,11 +19,8 @@ export function getAllFamilies () {
       const condition = families.length
 
       if (condition) {
-        console.log('end early')
         return null
       }
-
-      console.log('keep going')
 
       const response = await superagent
         .get('http://localhost:4000/family')
@@ -92,6 +89,35 @@ export function updateFamily (id, update) {
         .send(update)
 
       const action = changeFamily(response.body)
+
+      dispatch(action)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const LOGGED_IN = "LOGGED_IN"
+
+function loggedIn (jwt) {
+  return {
+    type: LOGGED_IN,
+    payload: jwt
+  }
+}
+
+export function login (name, password) {
+  return async function (dispatch) {
+    try {
+      const body = { name, password }
+
+      const response = await superagent
+        .post('http://localhost:4000/login')
+        .send(body)
+
+      console.log('response.body', response)
+
+      const action = loggedIn(response.text)
 
       dispatch(action)
     } catch (error) {

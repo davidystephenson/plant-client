@@ -68,8 +68,6 @@ class Family extends Component {
       const idFamily = familiesList
         .find(family => family.id === idNumber)
 
-      console.log('idFamily test:', idFamily)
-
       return idFamily
     }
 
@@ -77,12 +75,8 @@ class Family extends Component {
   }
 
   render () {
-    console.log('this.props.test:', this.props)
-    
     const family = this.pickFamily()
     
-    console.log('family test:', family)
-
     return <div>
       <marquee>{family.name}</marquee>
 
