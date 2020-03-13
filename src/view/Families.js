@@ -5,7 +5,7 @@ import Family from './Family'
 import {
   getAllFamilies,
   createNewFamily
-} from './actions'
+} from '../actions'
 
 // class Families extends React.Component {
 class Families extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {
   updateFamily,
-} from './actions'
+} from '../actions'
 
 class EditFamilyForm extends Component {
   state = {

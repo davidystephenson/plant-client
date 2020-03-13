@@ -86,7 +86,7 @@ export function updateFamily (id, update) {
     try {
       const response = await superagent
         .put(`http://localhost:4000/family/${id}`)
-        .send(update)
+        .send(update) // this request sends the 'update' object as the body
 
       const action = changeFamily(response.body)
 

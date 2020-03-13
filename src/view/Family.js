@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {
   updateFamily,
   getAllFamilies
-} from './actions'
+} from '../actions'
 import EditFamilyForm from './EditFamilyForm'
 import { Route } from 'react-router-dom'
 
